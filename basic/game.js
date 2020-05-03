@@ -11,6 +11,7 @@ var config = {
 };
 
 var ship;
+var smile;
 var speed;
 var cursors;
 var text;
@@ -23,11 +24,14 @@ var game = new Phaser.Game(config);
 
 function preload(){
     this.load.image('ship', 'assets/sprites/ship.png');
+    this.load.image('smile', 'assets/sprites/smile.png');
 }
 
 function create(){
     // ship = this.add.text(0, 0, 'Hello World', { font: '"Press Start 2P"' });
-    ship = this.add.sprite(400, 500, 'ship');
+    //ship = this.add.sprite(400, 500, 'ship');
+
+    ship = this.add.sprite(400, 500, 'smile');
     cursors = this.input.keyboard.createCursorKeys();
     speed = Phaser.Math.GetSpeed(300, 1);
 }
