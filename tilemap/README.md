@@ -1,3 +1,6 @@
 # Phaser3 using TileMap
 
-Beginner Project on using tilemap. Code from https://github.com/photonstorm/phaser3-examples/
+- View here: https://adamilyas.github.io/phaser3-repo/tilemap/
+- Beginner Project on using tilemap. Code from https://github.com/photonstorm/phaser3-examples/
+
+
