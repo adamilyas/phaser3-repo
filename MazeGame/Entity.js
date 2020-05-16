@@ -1,6 +1,11 @@
 'use strict';
 
+/**
+ * @author adam
+ * 
+ */
 class MazeTileMapGenerator {
+
     constructor(height, width){
         this.height = height;
         this.width = width;
