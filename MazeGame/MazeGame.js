@@ -74,6 +74,8 @@ var MazeGame = new Phaser.Class({
             delay: 0,
             callback: () => {
     
+                console.log(currentTile);
+
                 // when there is no tile left to go. end maze generating event.
                 if (currentTile == null){
                     if (stack.length === 0){
@@ -106,10 +108,9 @@ var MazeGame = new Phaser.Class({
     
                 let neighbours = currentTile
                     .getNeighbours()
-                    .filter(myTile => myTile.getIndex() !== 2 && !myTile.equals(previousTile));
+                    .filter(myTile => myTile.getIndex() !== 2 && !myTile.equals(previousTile)); // remove previous tile from neighbours
     
                 let visitedNeighbours = neighbours.filter(myTile => myTile.getIndex() === 0);
-                console.log(visitedNeighbours);
                 if (visitedNeighbours.length > 0 && previousTile !== null){
                     currentTile.setIndex(2);
                     currentTile = stack.pop();
@@ -117,11 +118,26 @@ var MazeGame = new Phaser.Class({
                     return;
                 }
     
-                // i want neighbours to be not visited ( index == 1) AND none of it's neighbours to be a path
+                // i want neighbours to be not visited ( index == 1) AND none of it's neighbours to be a path/
                 neighbours = neighbours.filter(
-                    myTile => myTile.getIndex() === 1  // && myTile.getNeighbours().filter(neighbourTile => !neighbourTile.equals(myTile) && neighbourTile.getIndex() === 0 ).length === 0 
+
+                    myTile => 
+                    
+                    myTile.getIndex() === 1 && 
+
+                    // PEAK FORWARD, if the neighbour of the currentTile's neighbour is a path, 
+                    // set the currentTile's neighbour to be a wall
+                    myTile.getNeighbours().filter(neighbourTile =>  {
+                        if (!neighbourTile.equals(currentTile) && neighbourTile.getIndex() === 0){
+                            myTile.setIndex(2);
+                            return true;
+                        }
+                    }).length === 0 &&
+
+                    // make sure any of the tiles that has been turned to walled
+                    myTile.getIndex() === 1
                 );
-    
+
                 if (neighbours.length === 0){
                     console.log("DEADEND");
                     currentTile = stack.pop();

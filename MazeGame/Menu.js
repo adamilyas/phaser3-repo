@@ -31,7 +31,6 @@ let config = {
     width: window.innerWidth,
     height: window.innerHeight,
     backgroundColor: '#000000', 
-    pixelArt: true,
     parent: 'phaser-example',
     scene: [ Menu, MazeGame ]
 };
