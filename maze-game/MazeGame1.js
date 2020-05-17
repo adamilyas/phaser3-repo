@@ -5,36 +5,36 @@ const unit = 32;
 let player;
 let layer;
 let speedDelay = 75;
-let loopState = true;
 
 // Game
-var MazeGame = new Phaser.Class({
+var MazeGame1 = new Phaser.Class({
 
     Extends: Phaser.Scene,
 
     initialize: function Demo () {
-        Phaser.Scene.call(this, { key: 'game' });
+        Phaser.Scene.call(this, { key: 'game1' });
     },
 
     init: function (data) {
         console.log('init', data);
 
-        this.imageID = data.id;
-        this.imageFile = data.image;
-
-        loopState = true;        
+        this.gameHeight = data.gameHeight;
+        this.gameWidth = data.gameWidth;
+        this.loopState = true;        
     },
 
     preload: function () {
         this.load.image('tiles', [ 'assets/tilemaps/tiles/drawtiles1.png', 'assets/tilemaps/tiles/drawtiles1_n.png' ]);
         this.load.image('smile', 'assets/sprites/smile.png');
-        this.load.tilemapCSV('map', 'assets/tilemaps/csv/grid.csv');
 
     },
 
     create: function (){
 
-        let gen = new MazeTileMapGenerator(Math.floor(window.innerHeight/32) , Math.floor(window.innerWidth/32));
+        let tileMapHeight = this.gameHeight / 32;
+        let tileMapWidth = this.gameWidth / 32;
+
+        let gen = new MazeTileMapGenerator(tileMapHeight , tileMapWidth);
         let map = this.make.tilemap({
             data: gen.tilemap, 
             tileWidth: 32,
@@ -79,7 +79,7 @@ var MazeGame = new Phaser.Class({
                 // when there is no tile left to go. end maze generating event.
                 if (currentTile == null){
                     if (stack.length === 0){
-                        loopState = false;
+                        this.loopState = false;
 
                         // change the pause for now...
                         myText.destroy();
@@ -165,7 +165,7 @@ var MazeGame = new Phaser.Class({
                 }
     
             },
-            loop: loopState
+            loop: this.loopState
         })
 
 
@@ -179,7 +179,7 @@ var MazeGame = new Phaser.Class({
     update: function(){
     
         // if maze is still generating, dont move.
-        if (loopState){
+        if (this.loopState){
             return;
         }
     
