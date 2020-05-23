@@ -1,11 +1,3 @@
-// Constants
-const unit = 32;
-
-// Variables
-let player;
-let layer;
-let speedDelay = 75;
-
 // Game
 var MazeGame1 = new Phaser.Class({
 
@@ -35,6 +27,8 @@ var MazeGame1 = new Phaser.Class({
         this.unvisited_tile = 41;
         this.wall_tile = 11;
         this.goal_tile = 84;
+
+        this.in_stack_tile = 28;                
     },
 
     create: function (){
@@ -43,6 +37,8 @@ var MazeGame1 = new Phaser.Class({
         let UNVISITED = this.unvisited_tile;
         let WALL = this.wall_tile;
         let GOAL = this.goal_tile;
+        let IN_STACK = this.in_stack_tile;
+
 
         let tileMapHeight = this.gameHeight / 32;
         let tileMapWidth = this.gameWidth / 32;
@@ -143,7 +139,7 @@ var MazeGame1 = new Phaser.Class({
                 }
     
                 // walker on a unvisited tile to make it into a tile
-                if (currentTile.getIndex() === UNVISITED){
+                if (currentTile.getIndex() === UNVISITED || currentTile.getIndex() == IN_STACK){
                     currentTile.setIndex(0);
                 } else {
                     currentTile.setIndex(WALL);
@@ -164,14 +160,17 @@ var MazeGame1 = new Phaser.Class({
                     return;
                 }
     
-                // i want neighbours to be not visited ( index == 1) AND none of it's neighbours to be a path/
+
+                // i want neighbours to be not visited ( meaning: UNVISTED or INSTACK , basically NOT WALL OR PATH) 
+                // AND none of it's neighbours to be a path
+                
                 neighbours = neighbours.filter(
 
                     myTile => 
                     
-                    myTile.getIndex() === UNVISITED && 
+                    myTile.getIndex() === UNVISITED || myTile.getIndex() === IN_STACK && 
 
-                    // PEAK FORWARD, if the neighbour of the currentTile's neighbour is a path, 
+                    // PEEK FORWARD, if the neighbour of the currentTile's neighbour is a path, 
                     // set the currentTile's neighbour to be a wall
                     myTile.getNeighbours().filter(neighbourTile =>  {
                         if (!neighbourTile.equals(currentTile) && neighbourTile.getIndex() === PATH){
@@ -180,8 +179,8 @@ var MazeGame1 = new Phaser.Class({
                         }
                     }).length === 0 &&
 
-                    // make sure any of the tiles that has been turned to walled
-                    myTile.getIndex() === UNVISITED
+                    // make sure to return neighbour tiles that has not been turned to wall
+                    myTile.getIndex() === UNVISITED || myTile.getIndex() === IN_STACK
                 );
 
                 if (neighbours.length === PATH){
@@ -207,7 +206,12 @@ var MazeGame1 = new Phaser.Class({
                 }
     
                 if (neighbours.length > 0){
-                    stack.push(neighbours[0])
+                    let neighbour_to_stack = neighbours[0];
+                    neighbour_to_stack.setIndex(IN_STACK);
+
+                    // console.log("Adding to stack");
+                    // console.log(neighbour_to_stack);
+                    stack.push(neighbour_to_stack);
                 }
     
             },
