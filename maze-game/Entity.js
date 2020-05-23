@@ -6,20 +6,20 @@
  */
 class MazeTileMapGenerator {
 
-    constructor(height, width){
+    constructor(height, width, path_tile = 0, unvisited_tile = 1, wall_tile = 2){
         this.height = height;
         this.width = width;
 
-        let tilemap = new Array(height).fill( new Array(width).fill(1) );
+        let tilemap = new Array(height).fill( new Array(width).fill(unvisited_tile) );
 
         // set first and last row to 2
-        tilemap[0] = new Array(width).fill(2);
-        tilemap[height-1] = new Array(width).fill(2);
+        tilemap[0] = new Array(width).fill(wall_tile);
+        tilemap[height-1] = new Array(width).fill(wall_tile);
 
         // set first and last column to 2
         tilemap.forEach(row => {
-            row[0] = 2;
-            row[width-1] = 2;
+            row[0] = wall_tile;
+            row[width-1] = wall_tile;
         });
 
         this.tilemap = tilemap;

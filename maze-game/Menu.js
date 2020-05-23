@@ -17,8 +17,7 @@ let Menu = new Phaser.Class({
         gameOneText.setInteractive(new Phaser.Geom.Rectangle(0, 0, gameOneText.width, gameOneText.height), Phaser.Geom.Rectangle.Contains);
         gameOneText.on('pointerup', function () {
             this.scene.start('game1', 
-                { gameHeight: canvasHeight, gameWidth: canvasWidth }
-            );
+                { gameHeight: canvasHeight, gameWidth: canvasWidth });
         }, this)
 
         let gameTwoText = this.add.text(100, 200, 'Maze 2 : using Hunt and Kill Algorithm', { font: '25px Courier', fill: '#00ff00' });
@@ -47,7 +46,7 @@ let config = {
     mode: Phaser.Scale.FIT,
     backgroundColor: '#000000', 
     parent: 'phaser-example',
-    scene: [ Menu, MazeGame1, MazeGame2]
+    scene: [ Menu, MazeGame1, MazeGame2, GameMessage]
 };
 
 let game = new Phaser.Game(config);
